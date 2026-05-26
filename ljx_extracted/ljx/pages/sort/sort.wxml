@@ -1,0 +1,32 @@
+<!--pages/sort/sort.wxml-->
+<!-- 搜索框 -->
+<view>
+  <!-- 搜索框 -->
+  <view class="modle-title">
+    <view class="sort-title">
+      <image src="../images/sort-title.png" class="sort-images"/>
+      <text class="title">榫卯非遗文化传承</text>
+    </view>
+    <view class="search-bar">
+      <image class="search-icon" src="../images/saearch.png" />
+      <input class="search-input" placeholder="搜索榫卯结构" />
+    </view>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view scroll-x class="category-scroll">
+    <view class="category-list">
+      <view wx:for="{{categories}}" wx:key="index" class="category-item {{currentIndex==index?'active':''}}" data-index="{{index}}" bindtap="switchCategory">{{item.name}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 卡片区域 -->
+  <view class="card-area">
+    <view class="card-list">
+      <view wx:for="{{currentData}}" wx:key="index" class="card-item">
+        <image class="card-image" src="{{item.image}}" />
+        <text class="card-title">{{item.title}}</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,17 @@
+<!--pages/login/login.wxml-->
+<view class="login-container">
+  <view class="title">欢迎登录</view>
+  <view class="subtitle">登录后体验更多功能</view>
+
+  <view class="form">
+    <input class="input" placeholder="请输入手机号/邮箱" />
+    <input class="input" placeholder="请输入密码" password />
+  </view>
+
+  <button class="btn-login">登录</button>
+
+  <view class="footer">
+    <text class="text">没有账号？</text>
+    <text class="link" bindtap="goToRegister">立即注册</text>
+  </view>
+</view>
