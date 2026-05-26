@@ -2,9 +2,9 @@ package com.sunmao.ljx.controller;
 
 import com.sunmao.ljx.common.Result;
 import com.sunmao.ljx.service.FollowService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,12 +38,12 @@ public class FollowController {
      * 关注关系服务
      * 用于调用关注关系相关的业务逻辑
      *
-     * @Autowired 注解说明：
-     * - 按类型注入依赖
-     * - Spring 会自动查找类型匹配的 Bean 并注入
+     * @Resource 注解说明：
+     * - 按名称注入依赖
+     * - 与 @Autowired 类似，但优先按名称匹配
      * - 适用于注入 Service 接口
      */
-    @Autowired
+    @Resource
     private FollowService followService;
 
     /**
@@ -100,33 +100,6 @@ public class FollowController {
         data.put("followCount", followCount);
         data.put("followerCount", followerCount);
         // 返回成功响应，包含关注统计
-        return Result.success(data);
-    }
-
-    /**
-     * 检查关注状态
-     * 查询用户A是否关注了用户B
-     *
-     * @GetMapping("/check") 注解说明：
-     * - 处理 GET 请求
-     * - 路径为 /api/follow/check
-     *
-     * @RequestParam 注解说明：
-     * - 从 URL 查询参数中获取值
-     * - 例如：/api/follow/check?userId=1&followUserId=2
-     *
-     * @param userId       关注者用户ID
-     * @param followUserId 被关注者用户ID
-     * @return 关注状态
-     */
-    @GetMapping("/check")
-    public Result<Map<String, Object>> checkFollow(@RequestParam Integer userId, @RequestParam Integer followUserId) {
-        // 调用 Service 层的查询方法
-        boolean isFollowed = followService.checkFollow(userId, followUserId);
-        // 创建响应数据
-        Map<String, Object> data = new HashMap<>();
-        data.put("isFollowed", isFollowed);
-        // 返回成功响应，包含关注状态
         return Result.success(data);
     }
 }

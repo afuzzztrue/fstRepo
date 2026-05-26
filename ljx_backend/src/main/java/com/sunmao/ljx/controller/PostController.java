@@ -3,9 +3,9 @@ package com.sunmao.ljx.controller;
 import com.sunmao.ljx.common.Result;
 import com.sunmao.ljx.entity.Post;
 import com.sunmao.ljx.service.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -38,12 +38,12 @@ public class PostController {
      * 动态帖子服务
      * 用于调用动态帖子相关的业务逻辑
      *
-     * @Autowired 注解说明：
-     * - 按类型注入依赖
-     * - Spring 会自动查找类型匹配的 Bean 并注入
+     * @Resource 注解说明：
+     * - 按名称注入依赖
+     * - 与 @Autowired 类似，但优先按名称匹配
      * - 适用于注入 Service 接口
      */
-    @Autowired
+    @Resource
     private PostService postService;
 
     /**
@@ -57,18 +57,19 @@ public class PostController {
      *
      * @RequestParam 注解说明：
      * - 从 URL 查询参数中获取值
-     * - 例如：/api/post/list?page=1&size=10
+     * - 例如：/api/post/list?page=1&limit=10
+     * - required = false 表示该参数可选，不传时使用默认值
      * - defaultValue 表示默认值
      *
-     * @param page 页码，默认为 1
-     * @param size 每页记录数，默认为 10
+     * @param page  页码，默认为 1
+     * @param limit 每页记录数，默认为 10
      * @return 帖子列表
      */
     @GetMapping("/list")
-    public Result<List<Post>> getPostList(@RequestParam(defaultValue = "1") Integer page,
-                                          @RequestParam(defaultValue = "10") Integer size) {
+    public Result<List<Post>> getList(@RequestParam(required = false, defaultValue = "1") Integer page,
+                                       @RequestParam(required = false, defaultValue = "10") Integer limit) {
         // 调用 Service 层的查询方法
-        List<Post> list = postService.getPostList(page, size);
+        List<Post> list = postService.getPageList(page, limit);
         // 返回成功响应，包含帖子列表
         return Result.success(list);
     }
@@ -90,9 +91,9 @@ public class PostController {
      * @return 该用户的帖子列表
      */
     @GetMapping("/user/{userId}")
-    public Result<List<Post>> getUserPosts(@PathVariable Integer userId) {
+    public Result<List<Post>> getListByUserId(@PathVariable Integer userId) {
         // 调用 Service 层的查询方法
-        List<Post> list = postService.getUserPosts(userId);
+        List<Post> list = postService.getListByUserId(userId);
         // 返回成功响应，包含帖子列表
         return Result.success(list);
     }
@@ -114,7 +115,7 @@ public class PostController {
      * @return 发布结果
      */
     @PostMapping("/publish")
-    public Result<Void> publishPost(@RequestBody Post post) {
+    public Result<Void> publish(@RequestBody Post post) {
         // 调用 Service 层的保存方法
         postService.save(post);
         // 返回成功响应（无数据）

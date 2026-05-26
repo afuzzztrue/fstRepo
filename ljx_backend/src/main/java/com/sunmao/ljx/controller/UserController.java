@@ -3,11 +3,9 @@ package com.sunmao.ljx.controller;
 import com.sunmao.ljx.common.Result;
 import com.sunmao.ljx.entity.User;
 import com.sunmao.ljx.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.Resource;
 
 /**
  * 用户控制器
@@ -45,12 +43,12 @@ public class UserController {
      * 用户服务
      * 用于调用用户相关的业务逻辑
      *
-     * @Autowired 注解说明：
-     * - 按类型注入依赖
-     * - Spring 会自动查找类型匹配的 Bean 并注入
+     * @Resource 注解说明：
+     * - 按名称注入依赖
+     * - 与 @Autowired 类似，但优先按名称匹配
      * - 适用于注入 Service 接口
      */
-    @Autowired
+    @Resource
     private UserService userService;
 
     /**
@@ -158,32 +156,5 @@ public class UserController {
         userService.updateById(user);
         // 返回成功响应（无数据）
         return Result.success();
-    }
-
-    /**
-     * 获取用户统计信息
-     * 查询用户的学习时长等统计数据
-     *
-     * @GetMapping("/stats/{userId}") 注解说明：
-     * - 处理 GET 请求
-     * - 路径为 /api/user/stats/{userId}
-     * - {userId} 是路径变量，表示用户ID
-     *
-     * @PathVariable 注解说明：
-     * - 从 URL 路径中获取变量值
-     * - 例如：/api/user/stats/1，userId 的值为 1
-     *
-     * @param userId 用户ID
-     * @return 用户统计信息
-     */
-    @GetMapping("/stats/{userId}")
-    public Result<Map<String, Object>> getUserStats(@PathVariable Integer userId) {
-        // 调用 Service 层的查询方法
-        User user = userService.getById(userId);
-        // 创建响应数据
-        Map<String, Object> stats = new HashMap<>();
-        stats.put("studyHours", user.getStudyHours());
-        // 返回成功响应，包含统计信息
-        return Result.success(stats);
     }
 }
