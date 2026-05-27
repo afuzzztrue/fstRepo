@@ -1,6 +1,5 @@
 // pages/register/register.js
 const app = getApp();
-const baseUrl = app.globalData.baseUrl;
 
 Page({
   data: {
@@ -36,14 +35,17 @@ Page({
       wx.showToast({ title: '两次密码不一致', icon: 'none' });
       return;
     }
+    const baseUrl = app.globalData.baseUrl;
+    const requestData = `account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}&nickname=${encodeURIComponent(nickname || account)}`;
+    console.log('baseUrl:', baseUrl);
+    console.log('requestData:', requestData);
     wx.request({
       url: baseUrl + '/api/user/register',
       method: 'POST',
-      data: {
-        account,
-        password,
-        nickname: nickname || account
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
+      data: requestData,
       success: res => {
         if (res.data.code === 200) {
           wx.showToast({ title: '注册成功', icon: 'success' });
@@ -55,7 +57,8 @@ Page({
         }
       },
       fail: err => {
-        wx.showToast({ title: '注册失败', icon: 'none' });
+        console.error('注册请求失败:', err);
+        wx.showToast({ title: '注册失败: ' + (err.errMsg || '网络错误'), icon: 'none' });
       }
     });
   },

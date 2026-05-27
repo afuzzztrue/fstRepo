@@ -1,6 +1,5 @@
 // pages/login/login.js
 const app = getApp();
-const baseUrl = app.globalData.baseUrl;
 
 Page({
   data: {
@@ -22,10 +21,14 @@ Page({
       wx.showToast({ title: '请输入账号和密码', icon: 'none' });
       return;
     }
+    const baseUrl = app.globalData.baseUrl;
     wx.request({
       url: baseUrl + '/api/user/login',
       method: 'POST',
-      data: { account, password },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: `account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}`,
       success: res => {
         if (res.data.code === 200) {
           wx.setStorageSync('userInfo', res.data.data);
