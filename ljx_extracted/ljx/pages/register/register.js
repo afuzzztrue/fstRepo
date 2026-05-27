@@ -42,7 +42,11 @@ Page({
       header: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data: `account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}&nickname=${encodeURIComponent(nickname || account)}`,
+      data: {
+        account: account,
+        password: password,
+        nickname: nickname || account
+      },
       success: res => {
         if (res.data.code === 200) {
           wx.showToast({ title: '注册成功', icon: 'success' });
