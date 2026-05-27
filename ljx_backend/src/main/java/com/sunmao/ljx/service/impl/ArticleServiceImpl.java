@@ -86,27 +86,3 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
     }
 }
-package com.sunmao.ljx.service.implpackage com.sunmao.ljx.service.impl;
-
-import com.baomidou.mybatisplus.extension.service.implpackage com.sunmao.ljx.service.impl;
-
-import com.baomidou.mybatisplus.extension.service.impl.Servicepackage com.sunmao.ljx.service.impl;
-
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sunmao.ljxpackage com.sunmao.ljx.service.impl;
-
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sunmao.ljx.entity.Article;
-import com.sunmaopackage com.sunmao.ljx.service.impl;
-
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sunmao.ljx.entity.Article;
-import com.sunmao.ljx.entity.CollectRecord;
-import com.sunmao.ljx.entity.LikeRecord;
-import com.sunmao.ljx.mapperpackage com.sunmao.ljx.service.impl;
-
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sunmao.ljx.entity.Article;
-import com.sunmao.ljx.entity.CollectRecord;
-import com.sunmao.ljx.entity.LikeRecord;
-import com.sunmao.ljx.mapper.Art
