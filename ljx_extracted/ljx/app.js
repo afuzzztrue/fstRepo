@@ -9,11 +9,27 @@ App({
     // 登录
     wx.login({
       success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        if (res.code) {
+          wx.request({
+            url: this.globalData.baseUrl + '/api/user/wxLogin',
+            method: 'POST',
+            data: {
+              code: res.code,
+              openid: 'wx_' + res.code
+            },
+            success: loginRes => {
+              if (loginRes.data.code === 200) {
+                wx.setStorageSync('userInfo', loginRes.data.data)
+                this.globalData.userInfo = loginRes.data.data
+              }
+            }
+          })
+        }
       }
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    baseUrl: 'http://localhost:8081'
   }
 })

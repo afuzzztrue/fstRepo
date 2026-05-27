@@ -1,58 +1,86 @@
 // index.js
 const app = getApp();
+const baseUrl = app.globalData.baseUrl;
 console.log(app,899)
 
 Page({
   data: {
-    dataList:[],
-    bannerList:[
-      '../images/轮播-1.jpg',
-      '../images/轮播-2.jpg',
-      '../images/轮播-3.jpg',
-      '../images/轮播-4.jpg'
-    ],
-    hotList:[
-      '../images/热门内容-1.jpg',
-      '../images/热门内容-2.jpg',
-      '../images/热门内容-3.jpg',
-      '../images/热门内容-4.jpg'
-    ]
-    },
-  //加载
-  onLoad:function(){
-    console.log('index加载页面的时候触发-onLoad')
-
-    wx.request({
-      url: 'http://tingapi.ting.baidu.com/v1/restserver/ting',
-      data:{
-        mothod:'baidu.ting.billboard.billList',
-        type: 1,
-        size:10,
-        offset:0
-      },
-      success:res=>{
-        //console.log(res,999);
-        this.setData({
-          dataList:res.data.list
-        })
-      }
-    })
+    dataList: [],
+    bannerList: [],
+    hotList: [],
+    articleList: []
   },
- onShow(){
-   console.log('index进入页面-onshow')
- },
 
- onHide(){
-   console.log('index离开页面-onHide')
- },
+  onLoad: function() {
+    console.log('index加载页面的时候触发-onLoad');
+    this.loadBannerList();
+    this.loadHotList();
+    this.loadArticleList();
+  },
 
- onReady(){
-   console.log('index页面渲染完成-onReady')
- },
+  loadBannerList() {
+    wx.request({
+      url: baseUrl + '/api/banner/list',
+      success: res => {
+        if (res.data.code === 200) {
+          const bannerList = res.data.data.map(item => item.imageUrl);
+          this.setData({ bannerList });
+        }
+      },
+      fail: err => {
+        console.error('获取轮播图失败', err);
+      }
+    });
+  },
 
- onPullDownRefresh(){
-   //重新获取第一页的数据
-   console.log('index下拉刷新页面，获取最新数据-onPullDownRefresh')
- }
-}
-)
+  loadHotList() {
+    wx.request({
+      url: baseUrl + '/api/article/hot',
+      data: { limit: 4 },
+      success: res => {
+        if (res.data.code === 200) {
+          const hotList = res.data.data.map(item => item.coverImage);
+          this.setData({ hotList });
+        }
+      },
+      fail: err => {
+        console.error('获取热门内容失败', err);
+      }
+    });
+  },
+
+  loadArticleList() {
+    wx.request({
+      url: baseUrl + '/api/article/hot',
+      data: { limit: 10 },
+      success: res => {
+        if (res.data.code === 200) {
+          this.setData({ articleList: res.data.data });
+        }
+      },
+      fail: err => {
+        console.error('获取文章列表失败', err);
+      }
+    });
+  },
+
+  onShow() {
+    console.log('index进入页面-onshow');
+  },
+
+  onHide() {
+    console.log('index离开页面-onHide');
+  },
+
+  onReady() {
+    console.log('index页面渲染完成-onReady');
+  },
+
+  onPullDownRefresh() {
+    console.log('index下拉刷新页面，获取最新数据-onPullDownRefresh');
+    this.loadBannerList();
+    this.loadHotList();
+    this.loadArticleList();
+    wx.stopPullDownRefresh();
+  }
+});
