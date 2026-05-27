@@ -13,10 +13,10 @@ App({
           wx.request({
             url: this.globalData.baseUrl + '/api/user/wxLogin',
             method: 'POST',
-            data: {
-              code: res.code,
-              openid: 'wx_' + res.code
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded'
             },
+            data: `code=${encodeURIComponent(res.code)}&openid=${encodeURIComponent('wx_' + res.code)}`,
             success: loginRes => {
               if (loginRes.data.code === 200) {
                 wx.setStorageSync('userInfo', loginRes.data.data)

@@ -36,14 +36,16 @@ Page({
       return;
     }
     const baseUrl = app.globalData.baseUrl;
+    const requestData = `account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}&nickname=${encodeURIComponent(nickname || account)}`;
     console.log('baseUrl:', baseUrl);
+    console.log('requestData:', requestData);
     wx.request({
       url: baseUrl + '/api/user/register',
       method: 'POST',
       header: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data: `account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}&nickname=${encodeURIComponent(nickname || account)}`,
+      data: requestData,
       success: res => {
         if (res.data.code === 200) {
           wx.showToast({ title: '注册成功', icon: 'success' });
