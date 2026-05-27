@@ -28,10 +28,7 @@ Page({
       header: {
         'Content-Type': 'application/x-www-form-urlencoded'
       },
-      data: {
-        account: account,
-        password: password
-      },
+      data: `account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}`,
       success: res => {
         if (res.data.code === 200) {
           wx.setStorageSync('userInfo', res.data.data);
