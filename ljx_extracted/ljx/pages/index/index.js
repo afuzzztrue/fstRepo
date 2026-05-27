@@ -1,6 +1,7 @@
 // index.js
 const app = getApp();
 const baseUrl = app.globalData.baseUrl;
+console.log(app,899)
 
 Page({
   data: {
