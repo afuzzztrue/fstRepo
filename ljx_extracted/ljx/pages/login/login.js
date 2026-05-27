@@ -25,7 +25,10 @@ Page({
     wx.request({
       url: baseUrl + '/api/user/login',
       method: 'POST',
-      data: { account, password },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: `account=${encodeURIComponent(account)}&password=${encodeURIComponent(password)}`,
       success: res => {
         if (res.data.code === 200) {
           wx.setStorageSync('userInfo', res.data.data);
